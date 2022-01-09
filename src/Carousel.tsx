@@ -3,6 +3,11 @@ import { Box } from "@mui/system";
 import { motion } from "framer-motion";
 import { FunctionComponent, useState } from "react";
 import creepy from "./media/creepy.png";
+import dancin from "./media/dancin.png";
+import layingdown from "./media/layingdown.png";
+import nice from "./media/nice.png";
+import peace from "./media/peace.png";
+import spooopiwer from "./media/spooopiwer.png";
 
 interface CarouselProp {
   height: number;
@@ -17,16 +22,7 @@ const Carousel: FunctionComponent<CarouselProp> = (
     width = 300,
     height = 100,
     gap = 10,
-    contents = [
-      "blue",
-      "yellow",
-      "green",
-      "pink",
-      "grey",
-      "purple",
-      "orange",
-      "brown",
-    ],
+    contents = [creepy, dancin, spooopiwer, peace, layingdown, nice],
     padding = 4,
   },
   prop
@@ -56,15 +52,10 @@ const Carousel: FunctionComponent<CarouselProp> = (
   const rotateRight = () => {
     const change = boxWidth + gap;
     setPos((pos + 1 + contents.length) % contents.length);
-    // setPos((pos - 1 + positions.length) % positions.length);
-    // setLeftHide((leftHide - 1 + contents.length) % contents.length);
-    // setRightHide((rightHide - 1 + contents.length) % contents.length);
   };
 
   const rotateLeft = () => {
     setPos((pos - 1 + contents.length) % contents.length);
-    // setLeftHide((leftHide + 1) % contents.length);
-    // setRightHide((rightHide + 1) % contents.length);
   };
 
   console.log(positions);
@@ -109,15 +100,10 @@ const Carousel: FunctionComponent<CarouselProp> = (
                 opacity: isOpaque(posIdx) ? 1 : 0.2,
               }}
             >
-              <Box
-                position="absolute"
-                bgcolor={bg}
-                height={height}
-                width={boxWidth}
-              >
+              <Box position="absolute" height={height} width={boxWidth}>
                 {/* {idx} */}
                 {/* <img height={"100px"} width={"100px"} src={creepy} /> */}
-                <img src={creepy} alt="fireSpot" height="100%" width="100%" />
+                <img src={bg} alt="fireSpot" height="100%" width="100%" />
               </Box>
             </motion.div>
           );

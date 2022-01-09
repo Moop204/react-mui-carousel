@@ -69,7 +69,7 @@ const Carousel: FunctionComponent<CarouselProp> = (prop) => {
           borderRadius={outerBorderRadius}
           {...prop}
         >
-          {contents.map((bg, idx) => {
+          {contents.map((imgSrc, idx) => {
             let posIdx = (pos + idx + contents.length) % contents.length;
             const ogIdx = posIdx;
             if (posIdx == contents.length - 1) {
@@ -93,7 +93,7 @@ const Carousel: FunctionComponent<CarouselProp> = (prop) => {
                     borderRadius: innerBorderRadius,
                   }}
                 >
-                  <img src={bg} alt="fireSpot" height="100%" width="100%" />
+                  <img src={imgSrc} alt="fireSpot" height="100%" width="100%" />
                 </Box>
               </motion.div>
             );

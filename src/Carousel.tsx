@@ -1,7 +1,8 @@
 import { Button } from "@mui/material";
 import { Box } from "@mui/system";
 import { motion } from "framer-motion";
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent, MouseEventHandler, useState } from "react";
+import { LeftRotate, RightRotate } from "./Controls";
 import creepy from "./media/creepy.png";
 import dancin from "./media/dancin.png";
 import layingdown from "./media/layingdown.png";
@@ -32,15 +33,6 @@ const Carousel: FunctionComponent<CarouselProp> = (
   const positions: number[] = [];
   const imgNum = contents.length - 2;
   for (let i = 0; i < imgNum; i++) {
-    // if (i == 0) {
-    //   positions.push(0);
-    //   continue;
-    // }
-    // if (i == imgNum - 1) {
-    //   positions.push(imgNum - 2);
-    //   continue;
-    // }
-
     positions.push((boxWidth + gap) * i);
   }
 
@@ -62,7 +54,7 @@ const Carousel: FunctionComponent<CarouselProp> = (
   console.log(pos);
 
   const isOpaque = (p: number) => {
-    if (p == 0 || p == positions.length - 1) {
+    if (p == 0 || p == contents.length - 1) {
       return false;
     }
     return true;
@@ -79,30 +71,24 @@ const Carousel: FunctionComponent<CarouselProp> = (
         {...prop}
       >
         {contents.map((bg, idx) => {
-          // console.log((pos + idx + positions.length) % positions.length);
-          // console.log(
-          //   "pos: " +
-          //     positions[(pos + idx + positions.length) % positions.length]
-          // );
           let posIdx = (pos + idx + contents.length) % contents.length;
+          const ogIdx = posIdx;
           if (posIdx == contents.length - 1) {
-            console.log("haa" + posIdx);
             posIdx = contents.length - 3;
           } else if (posIdx != 0) {
             posIdx--;
           }
           console.log(idx + " -> " + posIdx);
+          console.log(idx + " -> " + ogIdx);
 
           return (
             <motion.div
               animate={{
                 x: positions[posIdx],
-                opacity: isOpaque(posIdx) ? 1 : 0.2,
+                opacity: isOpaque(ogIdx) ? 1 : 0.0,
               }}
             >
               <Box position="absolute" height={height} width={boxWidth}>
-                {/* {idx} */}
-                {/* <img height={"100px"} width={"100px"} src={creepy} /> */}
                 <img src={bg} alt="fireSpot" height="100%" width="100%" />
               </Box>
             </motion.div>
@@ -116,22 +102,8 @@ const Carousel: FunctionComponent<CarouselProp> = (
           flexDirection: "row",
         }}
       >
-        <Button
-          sx={{
-            flexGrow: 1,
-          }}
-          onClick={rotateLeft}
-        >
-          {"<"}
-        </Button>
-        <Button
-          sx={{
-            flexGrow: 1,
-          }}
-          onClick={rotateRight}
-        >
-          {">"}
-        </Button>
+        <LeftRotate onClick={rotateLeft} />
+        <RightRotate onClick={rotateRight} />
       </Box>
       {/* <image src="https://upload.wikimedia.org/wikipedia/commons/8/8a/P%26W_4006_Baltic_CT.jpg" /> */}
     </>

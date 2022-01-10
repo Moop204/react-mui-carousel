@@ -97,6 +97,18 @@ const Carousel: FunctionComponent<CarouselProp> = (prop) => {
   }
   const [pos, setPos] = useState(0);
 
+  const generateIndicator = (pos: number, hidden: number) => {
+    let res = "";
+    for (let i = 0; i < hidden; i++) {
+      if (i == pos) {
+        res += "◯";
+      } else {
+        res += "⬤";
+      }
+    }
+    return res;
+  };
+
   const rotateRight = () => {
     setPos((pos + 1 + contents.length) % contents.length);
   };
@@ -148,6 +160,7 @@ const Carousel: FunctionComponent<CarouselProp> = (prop) => {
           }}
         >
           <LeftRotate onClick={rotateLeft} />
+          {generateIndicator(pos, contents.length)}
           <RightRotate onClick={rotateRight} />
         </Box>
       </Box>

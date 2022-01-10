@@ -23,19 +23,22 @@ Extends DefaultComponentProps for MUI's Box component so should work for most of
 * gap
     Defaulted to 10px. Passed only as a number due to internal calculations. Is the spacing between images in the gallery. 
 * contents 
-    An array of image sources. By default (currently only option) n-2 images are displayed with the first and last images hidden. Is implemented as follows: 
+    An array of image sources. By default n-2 images are displayed with the first and last images hidden. Is implemented as follows: 
     ```ts
       <img src={imgSrc} alt="fireSpot" height="100%" width="100%" />
     ```
 * innerBorderRadius 
     The border radius of each image in the gallery. Default to 50% making each image round.
+* show
+    The number of images shown at once on the gallery. At most n-2 images can be shown as at least two must be hidden to ensure smooth transitions. By default shows n-2 images, excluding the first and last image. 
+
+    Note: It is possible to use up to n-1 images but rotating right will have the image transition across the gallery which can be distracting. This effect is less noticable with smaller n-values. 
 
 ##### Tools
 React, Framer Motion, Material UI
 
 ###### Todo
 * Examples of different ways to use component 
-* More control over how many images are hidden
 * More control over the controls
 * Indicator of additional images
 * Faux 3D effect

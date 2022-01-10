@@ -21,6 +21,7 @@ interface CarouselProp extends DefaultComponentProps<BoxTypeMap<{}, "div">> {
   outerBorderRadius?: string;
   outerBackgroundColor?: string;
   controlBackgroundColor?: string;
+  show?: number;
 }
 
 const Carousel: FunctionComponent<CarouselProp> = (prop) => {
@@ -32,12 +33,20 @@ const Carousel: FunctionComponent<CarouselProp> = (prop) => {
     innerBorderRadius = "50%",
     outerBorderRadius = "0px",
     outerBackgroundColor = "none",
+    show,
   } = prop;
 
+  let hidden: number;
+  if (show) {
+    hidden = contents.length - show;
+  } else {
+    hidden = 2;
+  }
+
   const boxWidth =
-    (width - gap * (contents.length - 3)) / (contents.length - 2);
+    (width - gap * (contents.length - 1 - hidden)) / (contents.length - hidden);
   const positions: number[] = [];
-  const imgNum = contents.length - 2;
+  const imgNum = contents.length - hidden;
   for (let i = 0; i < imgNum; i++) {
     positions.push((boxWidth + gap) * i);
   }
@@ -52,7 +61,7 @@ const Carousel: FunctionComponent<CarouselProp> = (prop) => {
   };
 
   const isOpaque = (p: number) => {
-    if (p == 0 || p == contents.length - 1) {
+    if (p == 0 || p >= contents.length - (hidden - 1)) {
       return false;
     }
     return true;
@@ -72,10 +81,11 @@ const Carousel: FunctionComponent<CarouselProp> = (prop) => {
           {contents.map((imgSrc, idx) => {
             let posIdx = (pos + idx + contents.length) % contents.length;
             const ogIdx = posIdx;
-            if (posIdx == contents.length - 1) {
-              posIdx = contents.length - 3;
-            } else if (posIdx != 0) {
+            if (posIdx != 0) {
               posIdx--;
+            }
+            if (posIdx >= positions.length) {
+              posIdx = positions.length - 1;
             }
             return (
               <motion.div
@@ -102,7 +112,6 @@ const Carousel: FunctionComponent<CarouselProp> = (prop) => {
         <Box
           width={"100%"}
           sx={{
-            // width: "100%",
             display: "flex",
             flexDirection: "row",
             justifyContent: "space-between",

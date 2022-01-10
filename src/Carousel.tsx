@@ -1,3 +1,4 @@
+import { ButtonUnstyled, IconButton, styled, Typography } from "@mui/material";
 import { DefaultComponentProps } from "@mui/material/OverridableComponent";
 import { Box, BoxTypeMap } from "@mui/system";
 import { motion } from "framer-motion";
@@ -18,6 +19,8 @@ interface CarouselProp extends DefaultComponentProps<BoxTypeMap<{}, "div">> {
   innerBorderRadius?: string;
   controlBackgroundColor?: string;
   show?: number;
+  indicator?: boolean;
+  inverseIndicator?: boolean;
 }
 
 /**
@@ -84,6 +87,8 @@ const Carousel: FunctionComponent<CarouselProp> = (prop) => {
     contents = [creepy, dancin, spooopiwer, peace, layingdown, nice],
     innerBorderRadius = "50%",
     show,
+    inverseIndicator,
+    indicator = true,
   } = prop;
 
   const hidden = hiddenImages(contents.length, show);
@@ -110,6 +115,47 @@ const Carousel: FunctionComponent<CarouselProp> = (prop) => {
       return false;
     }
     return true;
+  };
+
+  const StyledIndicator = styled("span")`
+    &:hover {
+      cursor: pointer;
+    }
+  `;
+
+  /**
+   * Indicates which part of the gallery is currently selected
+   * @param pos Position of current index
+   * @param total Total number of positions available
+   * @returns
+   */
+  const generateIndicator = (
+    pos: number,
+    total: number,
+    onClick: any,
+    inverse?: boolean
+  ) => {
+    let res = "";
+    const arrMap = [];
+    for (let i = 0; i < total; i++) {
+      arrMap.push((i - pos + total) % total);
+    }
+
+    return arrMap.map((idx) => {
+      let displayedIcon: string = "";
+      if (idx == 0) {
+        displayedIcon += inverse ? "◯" : "⬤";
+      } else {
+        displayedIcon += inverse ? "⬤" : "◯";
+      }
+
+      return (
+        <StyledIndicator onClick={() => setPos(pos + idx)}>
+          {displayedIcon}
+        </StyledIndicator>
+      );
+    });
+    return res;
   };
 
   return (
@@ -148,6 +194,10 @@ const Carousel: FunctionComponent<CarouselProp> = (prop) => {
           }}
         >
           <LeftRotate onClick={rotateLeft} />
+          <Box>
+            {indicator &&
+              generateIndicator(pos, contents.length, setPos, inverseIndicator)}
+          </Box>
           <RightRotate onClick={rotateRight} />
         </Box>
       </Box>

@@ -28,20 +28,20 @@ Extends DefaultComponentProps for MUI's Box component so should work for most of
       <img src={imgSrc} alt="fireSpot" height="100%" width="100%" />
     ```
 * innerBorderRadius 
-    The border radius of each image in the gallery. Default to 50% making each image round.
+    The border radius of each image in the gallery. Default to 50% making each image circular.
 * show
     The number of images shown at once on the gallery. At most n-2 images can be shown as at least two must be hidden to ensure smooth transitions. By default shows n-2 images, excluding the first and last image. 
 
     Note: It is possible to use up to n-1 images but rotating right will have the image transition across the gallery which can be distracting. This effect is less noticable with smaller n-values. 
-
+* indicator
+    Defaulted to true. A boolean describing whether or not to display the indicator. 
+* inverseIndicator
+    Defaulted to false. Displays the selected position in a filled circle with the rest as empty circles. If true then the selected position is an empty circle and the rest are filled. 
 ##### Tools
 React, Framer Motion, Material UI
 
 ###### Todo
 * Examples of different ways to use component 
-* More control over the controls
-* Indicator of additional images
-* Faux 3D effect
 * Better example (more detailed screenshot, animated, demo)
 * Publish to bit dev
 

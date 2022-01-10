@@ -12,6 +12,7 @@ function App() {
         <Carousel
           height={200}
           width={700}
+          gap={10}
           borderRadius="20px"
           bgcolor="white"
           padding="8px"

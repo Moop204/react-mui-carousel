@@ -19,6 +19,7 @@ interface CarouselProp extends DefaultComponentProps<BoxTypeMap<{}, "div">> {
   innerBorderRadius?: string;
   controlBackgroundColor?: string;
   show?: number;
+  indicator?: boolean;
   inverseIndicator?: boolean;
 }
 
@@ -87,6 +88,7 @@ const Carousel: FunctionComponent<CarouselProp> = (prop) => {
     innerBorderRadius = "50%",
     show,
     inverseIndicator,
+    indicator = true,
   } = prop;
 
   const hidden = hiddenImages(contents.length, show);
@@ -190,7 +192,8 @@ const Carousel: FunctionComponent<CarouselProp> = (prop) => {
           }}
         >
           <LeftRotate onClick={rotateLeft} />
-          {generateIndicator(pos, contents.length, setPos, inverseIndicator)}
+          {indicator &&
+            generateIndicator(pos, contents.length, setPos, inverseIndicator)}
           <RightRotate onClick={rotateRight} />
         </Box>
       </Box>

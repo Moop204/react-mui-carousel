@@ -20,6 +20,62 @@ interface CarouselProp extends DefaultComponentProps<BoxTypeMap<{}, "div">> {
   show?: number;
 }
 
+/**
+ * Calculates how many images are hidden
+ */
+const hiddenImages = (total: number, requested?: number) => {
+  if (requested) {
+    return total - requested;
+  } else {
+    return 2;
+  }
+};
+
+interface InnerImageProp {
+  height: number;
+  width: number;
+  position: number;
+  opacity: number;
+  imgSrc: string;
+  innerBorderRadius: string;
+}
+
+/**
+ * Individual images in gallery
+ */
+const InnerImage: FunctionComponent<InnerImageProp> = ({
+  height,
+  width,
+  position,
+  opacity,
+  imgSrc,
+  innerBorderRadius,
+}) => {
+  return (
+    <motion.div
+      animate={{
+        x: position,
+        opacity: opacity,
+      }}
+    >
+      <Box
+        position="absolute"
+        height={height}
+        width={width}
+        overflow={"hidden"}
+        sx={{
+          borderRadius: innerBorderRadius,
+        }}
+      >
+        <img src={imgSrc} alt="fireSpot" height="100%" width="100%" />
+      </Box>
+    </motion.div>
+  );
+};
+
+/**
+ * Image gallery component
+ */
 const Carousel: FunctionComponent<CarouselProp> = (prop) => {
   const {
     width = 300,
@@ -30,12 +86,7 @@ const Carousel: FunctionComponent<CarouselProp> = (prop) => {
     show,
   } = prop;
 
-  let hidden: number;
-  if (show) {
-    hidden = contents.length - show;
-  } else {
-    hidden = 2;
-  }
+  const hidden = hiddenImages(contents.length, show);
 
   const boxWidth =
     (width - gap * (contents.length - 1 - hidden)) / (contents.length - hidden);
@@ -75,24 +126,14 @@ const Carousel: FunctionComponent<CarouselProp> = (prop) => {
               posIdx = positions.length - 1;
             }
             return (
-              <motion.div
-                animate={{
-                  x: positions[posIdx],
-                  opacity: isOpaque(ogIdx) ? 1 : 0.0,
-                }}
-              >
-                <Box
-                  position="absolute"
-                  height={height}
-                  width={boxWidth}
-                  overflow={"hidden"}
-                  sx={{
-                    borderRadius: innerBorderRadius,
-                  }}
-                >
-                  <img src={imgSrc} alt="fireSpot" height="100%" width="100%" />
-                </Box>
-              </motion.div>
+              <InnerImage
+                height={height}
+                width={boxWidth}
+                position={positions[posIdx]}
+                imgSrc={imgSrc}
+                innerBorderRadius={innerBorderRadius}
+                opacity={isOpaque(ogIdx) ? 1 : 0.0}
+              />
             );
           })}
         </Box>

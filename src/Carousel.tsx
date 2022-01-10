@@ -117,8 +117,10 @@ const Carousel: FunctionComponent<CarouselProp> = (prop) => {
     return true;
   };
 
-  const StyledIndicator = styled(IconButton)`
-    color: white;
+  const StyledIndicator = styled("span")`
+    &:hover {
+      cursor: pointer;
+    }
   `;
 
   /**
@@ -192,8 +194,10 @@ const Carousel: FunctionComponent<CarouselProp> = (prop) => {
           }}
         >
           <LeftRotate onClick={rotateLeft} />
-          {indicator &&
-            generateIndicator(pos, contents.length, setPos, inverseIndicator)}
+          <Box>
+            {indicator &&
+              generateIndicator(pos, contents.length, setPos, inverseIndicator)}
+          </Box>
           <RightRotate onClick={rotateRight} />
         </Box>
       </Box>

@@ -1,4 +1,3 @@
-import { Button } from "@mui/material";
 import { DefaultComponentProps } from "@mui/material/OverridableComponent";
 import { Box, BoxTypeMap } from "@mui/system";
 import { motion } from "framer-motion";
@@ -16,10 +15,7 @@ interface CarouselProp extends DefaultComponentProps<BoxTypeMap<{}, "div">> {
   width: number;
   gap: number;
   contents: string[];
-  // padding?: number;
   innerBorderRadius?: string;
-  outerBorderRadius?: string;
-  outerBackgroundColor?: string;
   controlBackgroundColor?: string;
   show?: number;
 }
@@ -31,8 +27,6 @@ const Carousel: FunctionComponent<CarouselProp> = (prop) => {
     gap = 10,
     contents = [creepy, dancin, spooopiwer, peace, layingdown, nice],
     innerBorderRadius = "50%",
-    outerBorderRadius = "0px",
-    outerBackgroundColor = "none",
     show,
   } = prop;
 
@@ -70,14 +64,7 @@ const Carousel: FunctionComponent<CarouselProp> = (prop) => {
   return (
     <>
       <Box display="flow" width={width}>
-        <Box
-          position="relative"
-          width={width}
-          height={height}
-          bgcolor={outerBackgroundColor}
-          borderRadius={outerBorderRadius}
-          {...prop}
-        >
+        <Box position="relative" width={width} height={height} {...prop}>
           {contents.map((imgSrc, idx) => {
             let posIdx = (pos + idx + contents.length) % contents.length;
             const ogIdx = posIdx;

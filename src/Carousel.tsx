@@ -1,3 +1,4 @@
+import { ButtonUnstyled, IconButton, styled, Typography } from "@mui/material";
 import { DefaultComponentProps } from "@mui/material/OverridableComponent";
 import { Box, BoxTypeMap } from "@mui/system";
 import { motion } from "framer-motion";
@@ -20,24 +21,6 @@ interface CarouselProp extends DefaultComponentProps<BoxTypeMap<{}, "div">> {
   show?: number;
   inverseIndicator?: boolean;
 }
-
-/**
- * Indicates which part of the gallery is currently selected
- * @param pos Position of current index
- * @param total Total number of positions available
- * @returns
- */
-const generateIndicator = (pos: number, total: number, inverse?: boolean) => {
-  let res = "";
-  for (let i = 0; i < total; i++) {
-    if (i == pos) {
-      res += inverse ? "◯" : "⬤";
-    } else {
-      res += inverse ? "⬤" : "◯";
-    }
-  }
-  return res;
-};
 
 /**
  * Calculates how many images are hidden
@@ -132,6 +115,45 @@ const Carousel: FunctionComponent<CarouselProp> = (prop) => {
     return true;
   };
 
+  const StyledIndicator = styled(IconButton)`
+    color: white;
+  `;
+
+  /**
+   * Indicates which part of the gallery is currently selected
+   * @param pos Position of current index
+   * @param total Total number of positions available
+   * @returns
+   */
+  const generateIndicator = (
+    pos: number,
+    total: number,
+    onClick: any,
+    inverse?: boolean
+  ) => {
+    let res = "";
+    const arrMap = [];
+    for (let i = 0; i < total; i++) {
+      arrMap.push((i - pos + total) % total);
+    }
+
+    return arrMap.map((idx) => {
+      let displayedIcon: string = "";
+      if (idx == 0) {
+        displayedIcon += inverse ? "◯" : "⬤";
+      } else {
+        displayedIcon += inverse ? "⬤" : "◯";
+      }
+
+      return (
+        <StyledIndicator onClick={() => setPos(pos + idx)}>
+          {displayedIcon}
+        </StyledIndicator>
+      );
+    });
+    return res;
+  };
+
   return (
     <>
       <Box display="flow" width={width}>
@@ -168,7 +190,7 @@ const Carousel: FunctionComponent<CarouselProp> = (prop) => {
           }}
         >
           <LeftRotate onClick={rotateLeft} />
-          {generateIndicator(pos, contents.length, inverseIndicator)}
+          {generateIndicator(pos, contents.length, setPos, inverseIndicator)}
           <RightRotate onClick={rotateRight} />
         </Box>
       </Box>

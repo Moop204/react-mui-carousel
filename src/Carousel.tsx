@@ -18,7 +18,26 @@ interface CarouselProp extends DefaultComponentProps<BoxTypeMap<{}, "div">> {
   innerBorderRadius?: string;
   controlBackgroundColor?: string;
   show?: number;
+  inverseIndicator?: boolean;
 }
+
+/**
+ * Indicates which part of the gallery is currently selected
+ * @param pos Position of current index
+ * @param total Total number of positions available
+ * @returns
+ */
+const generateIndicator = (pos: number, total: number, inverse?: boolean) => {
+  let res = "";
+  for (let i = 0; i < total; i++) {
+    if (i == pos) {
+      res += inverse ? "◯" : "⬤";
+    } else {
+      res += inverse ? "⬤" : "◯";
+    }
+  }
+  return res;
+};
 
 /**
  * Calculates how many images are hidden
@@ -84,6 +103,7 @@ const Carousel: FunctionComponent<CarouselProp> = (prop) => {
     contents = [creepy, dancin, spooopiwer, peace, layingdown, nice],
     innerBorderRadius = "50%",
     show,
+    inverseIndicator,
   } = prop;
 
   const hidden = hiddenImages(contents.length, show);
@@ -96,18 +116,6 @@ const Carousel: FunctionComponent<CarouselProp> = (prop) => {
     positions.push((boxWidth + gap) * i);
   }
   const [pos, setPos] = useState(0);
-
-  const generateIndicator = (pos: number, hidden: number) => {
-    let res = "";
-    for (let i = 0; i < hidden; i++) {
-      if (i == pos) {
-        res += "◯";
-      } else {
-        res += "⬤";
-      }
-    }
-    return res;
-  };
 
   const rotateRight = () => {
     setPos((pos + 1 + contents.length) % contents.length);
@@ -160,7 +168,7 @@ const Carousel: FunctionComponent<CarouselProp> = (prop) => {
           }}
         >
           <LeftRotate onClick={rotateLeft} />
-          {generateIndicator(pos, contents.length)}
+          {generateIndicator(pos, contents.length, inverseIndicator)}
           <RightRotate onClick={rotateRight} />
         </Box>
       </Box>
